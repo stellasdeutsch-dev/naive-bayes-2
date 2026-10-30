@@ -526,7 +526,7 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
     document.getElementById("slWrap").hidden=!bayes;
     document.getElementById("bMle").setAttribute("aria-pressed",!bayes);
     document.getElementById("bBayes").setAttribute("aria-pressed",bayes);
-    document.getElementById("labNote").textContent=bayes?`add-${s} smoothing: (count + ${s}) / (N_c + ${2*s})`:"counting only: zeros stay zeros";
+    document.getElementById("labNote").innerHTML=bayes?`add-${s} smoothing: (count + ${s}) / (N<sub>c</sub> + ${2*s})`:"counting only: zeros stay zeros";
     const {pi,th}=params(s);
     document.getElementById("msgs").innerHTML=MSGS.map(([m,x])=>{
       const sc={};for(const c of ["T","F"])sc[c]=pi[c]*x.reduce((p,xj,j)=>p*(xj?th[c][j]:1-th[c][j]),1);
