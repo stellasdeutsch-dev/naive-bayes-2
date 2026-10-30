@@ -278,13 +278,13 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
     <div class="twocol">
       <div class="sheet stamp">
         <span class="h3">Beta prior for one probability</span>
-        <p class="prose" style="color:#4a3d36">Prior θ ~ Beta(a, b). After k “yes” in n tries the posterior is Beta(a + k, b + n − k), and the chance of “yes” next time is its mean:</p>
+        <p style="color:#4a3d36">Prior θ ~ Beta(a, b). After k “yes” in n tries the posterior is Beta(a + k, b + n − k), and the chance of “yes” next time is its mean:</p>
         <div class="frm">(k + a) / (n + a + b)</div>
         <p class="note2">a = b = 1: (k + 1)/(n + 2), Laplace's rule. 0 of 3 → 1/5, never 0.</p>
       </div>
       <div class="sheet stamp">
         <span class="h3">Dirichlet prior for class probabilities</span>
-        <p class="prose" style="color:#4a3d36">Prior π ~ Dir(α₁, …, α_C). With class counts N_c the posterior is Dir(α_c + N_c), and the predictive class probability is:</p>
+        <p style="color:#4a3d36">Prior π ~ Dir(α₁, …, α_C). With class counts N_c the posterior is Dir(α_c + N_c), and the predictive class probability is:</p>
         <div class="frm">(N_c + α_c) / (N + α₀), &nbsp; α₀ = Σα_c</div>
         <p class="note2">With two classes this is just a Beta again.</p>
       </div>
@@ -351,7 +351,7 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
     <div class="twocol">
       <div class="sheet">
         <span class="h3">2025 final, task 5 (Dota numbers)</span>
-        <p class="prose" style="color:#4a3d36">Games (W/L) with x₁ = first blood, x₂ = won mid: (L,1,1), (L,0,0), (W,1,1), (W,1,0), (L,0,1), (L,1,0), (W,1,1). With the MLE, x = (0, 1) gave “loss with probability 1” because θ̂_FB,W = 3/3 = 1.</p>
+        <p style="color:#4a3d36">Games (W/L) with x₁ = first blood, x₂ = won mid: (L,1,1), (L,0,0), (W,1,1), (W,1,0), (L,0,1), (L,1,0), (W,1,1). With the MLE, x = (0, 1) gave “loss with probability 1” because θ̂_FB,W = 3/3 = 1.</p>
         <div class="derive">
           <div class="drow"><span class="k">add-one</span><span class="eq">θ̄<sub>FB,W</sub> = 4/5, θ̄<sub>mid,W</sub> = 3/5; θ̄<sub>FB,L</sub> = θ̄<sub>mid,L</sub> = 3/6</span><span class="why">(count + 1)/(N_c + 2)</span></div>
           <div class="drow"><span class="k">priors</span><span class="eq">π̄_W = 4/9, π̄_L = 5/9</span><span class="why">(N_c + 1)/(7 + 2)</span></div>
@@ -408,9 +408,9 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
   <section class="section" id="irrelevant">
     <h2 class="h2t">Irrelevant words &amp; <span style="color:var(--muted)">naive vs full model</span></h2>
     <div class="threecol">
-      <div class="sheet"><span class="h3">When does a word not matter? (Week 6, Q2)</span><p class="prose" style="color:#4a3d36">A word changes the posterior odds only through θ_1w/θ_2w (present) and (1 − θ_1w)/(1 − θ_2w) (absent). If <b>θ_1w = θ_2w</b>, both ratios are 1 and log 1 = 0: the word has no effect.</p></div>
-      <div class="sheet"><span class="h3">A smoothing side effect</span><p class="prose" style="color:#4a3d36">Say “gl” is in every message of both classes, 4 toxic and 6 friendly. Add-one gives 5/6 ≈ 0.83 for toxic but 7/8 = 0.875 for friendly. The useless word now nudges towards the bigger class. Fixes: drop such words (stop words, MI filter), share one estimate across classes, or use a regularised discriminative model.</p></div>
-      <div class="sheet"><span class="h3">Naive vs full model (Week 6, Q1)</span><p class="prose" style="color:#4a3d36">A full model of p(x | c) needs C(2<sup>D</sup> − 1) numbers; naive Bayes needs C·D. With <b>little data</b> NBC usually wins: more bias, much less variance, fewer zero counts. With <b>lots of data</b> the full model can win if the words really are dependent.</p></div>
+      <div class="sheet"><span class="h3">When does a word not matter? (Week 6, Q2)</span><p style="color:#4a3d36">A word changes the posterior odds only through θ_1w/θ_2w (present) and (1 − θ_1w)/(1 − θ_2w) (absent). If <b>θ_1w = θ_2w</b>, both ratios are 1 and log 1 = 0: the word has no effect.</p></div>
+      <div class="sheet"><span class="h3">A smoothing side effect</span><p style="color:#4a3d36">Say “gl” is in every message of both classes, 4 toxic and 6 friendly. Add-one gives 5/6 ≈ 0.83 for toxic but 7/8 = 0.875 for friendly. The useless word now nudges towards the bigger class. Fixes: drop such words (stop words, MI filter), share one estimate across classes, or use a regularised discriminative model.</p></div>
+      <div class="sheet"><span class="h3">Naive vs full model (Week 6, Q1)</span><p style="color:#4a3d36">A full model of p(x | c) needs C(2<sup>D</sup> − 1) numbers; naive Bayes needs C·D. With <b>little data</b> NBC usually wins: more bias, much less variance, fewer zero counts. With <b>lots of data</b> the full model can win if the words really are dependent.</p></div>
     </div>
   </section>
 
@@ -420,7 +420,7 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
     <div class="twocol">
       <div class="sheet">
         <span class="h3">Task 4: estimated probabilities with zeros</span>
-        <p class="prose" style="color:#4a3d36">MLE table (pass/fail, 3 features): θ_hw,pass = 1/2, θ_att,pass = 1/2, θ_q,pass = 0; θ_hw,fail = 0, θ_att,fail = 1/2, θ_q,fail = 0; π̂_pass = 3/5, π̂_fail = 2/5. <b>(a)</b> Classify (1, 1, 0). <b>(b)</b> Explain the importance of priors for small data sets and give the conjugate priors on θ and π.</p>
+        <p style="color:#4a3d36">MLE table (pass/fail, 3 features): θ_hw,pass = 1/2, θ_att,pass = 1/2, θ_q,pass = 0; θ_hw,fail = 0, θ_att,fail = 1/2, θ_q,fail = 0; π̂_pass = 3/5, π̂_fail = 2/5. <b>(a)</b> Classify (1, 1, 0). <b>(b)</b> Explain the importance of priors for small data sets and give the conjugate priors on θ and π.</p>
         <div class="derive">
           <div class="drow"><span class="k">pass</span><span class="eq">3/5 · 1/2 · 1/2 · (1 − 0) = 0.15</span><span class="why">hw yes, att yes, q no</span></div>
           <div class="drow"><span class="k">fail</span><span class="eq">2/5 · 0 · … = 0</span><span class="why">θ_hw,fail = 0 kills it</span></div>
@@ -430,7 +430,7 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
       </div>
       <div class="sheet stamp">
         <span class="h3">Task 1(h): explain mutual information</span>
-        <p class="prose" style="color:#4a3d36">“I(X, Y) measures how far the joint distribution p(x, y) is from the product p(x)p(y), formally the KL divergence between them. It is zero if and only if X and Y are independent. In naive Bayes we compute I(X_j, Y) for every feature and the class; features with small I carry little information about the class and can be removed (feature selection).”</p>
+        <p style="color:#4a3d36">“I(X, Y) measures how far the joint distribution p(x, y) is from the product p(x)p(y), formally the KL divergence between them. It is zero if and only if X and Y are independent. In naive Bayes we compute I(X_j, Y) for every feature and the class; features with small I carry little information about the class and can be removed (feature selection).”</p>
       </div>
     </div>
   </section>
