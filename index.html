@@ -85,7 +85,7 @@ h1,h2,h3{margin:0;text-wrap:balance;font-weight:400}
 
 /* sheets */
 .sheet{background:var(--sheet);border:1px solid var(--line);padding:clamp(20px,3.6vw,40px);display:flex;flex-direction:column;gap:16px;box-shadow:0 10px 26px rgba(60,35,20,.06);position:relative;min-width:0}
-.stamp{--s:10px;-webkit-mask:radial-gradient(circle at var(--s) var(--s),transparent calc(var(--s)*.6),#000 calc(var(--s)*.6 + .5px)) calc(-1*var(--s)) calc(-1*var(--s))/calc(2*var(--s)) calc(2*var(--s));mask:radial-gradient(circle at var(--s) var(--s),transparent calc(var(--s)*.6),#000 calc(var(--s)*.6 + .5px)) calc(-1*var(--s)) calc(-1*var(--s))/calc(2*var(--s)) calc(2*var(--s));padding:clamp(26px,4vw,44px)}
+.stamp{box-shadow:inset 0 0 0 8px var(--sheet),inset 0 0 0 9px #cdbca6,0 10px 26px rgba(60,35,20,.06);padding:clamp(26px,4vw,44px);border-style:dashed;border-color:#d8c7b0}
 .clip{position:absolute;top:-22px;right:34px;width:30px;height:auto}
 .twocol{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:start}
 .threecol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
