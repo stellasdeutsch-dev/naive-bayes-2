@@ -240,18 +240,18 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
       <div class="sheet">
         <ol class="steps-l" style="font-size:15.5px;color:#4a3d36">
           <li><b>Task:</b> classify an all-chat message as toxic (T) or friendly (F).</li>
-          <li><b>Features:</b> x_j = 1 if word j appears (ez, noob, gg, wp), else 0.</li>
-          <li><b>Naive assumption:</b> words are independent given the class, so <span class="m">p(x | c) = Π<sub>j</sub> θ_jc<sup>x_j</sup>(1 − θ_jc)<sup>1−x_j</sup></span>.</li>
-          <li><b>Fit by counting (MLE):</b> <span class="m">π̂_c = N_c/N</span>, <span class="m">θ̂_jc = N_jc/N_c</span>.</li>
-          <li><b>Predict:</b> <span class="m">p(c | x) ∝ π_c · Π (word factors)</span>, then divide by the sum.</li>
+          <li><b>Features:</b> x<sub>j</sub> = 1 if word j appears (ez, noob, gg, wp), else 0.</li>
+          <li><b>Naive assumption:</b> words are independent given the class, so <span class="m">p(x | c) = Π<sub>j</sub> θ<sub>jc</sub><sup>x<sub>j</sub></sup>(1 − θ<sub>jc</sub>)<sup>1−x<sub>j</sub></sup></span>.</li>
+          <li><b>Fit by counting (MLE):</b> <span class="m">π̂<sub>c</sub> = N<sub>c</sub>/N</span>, <span class="m">θ̂<sub>jc</sub> = N<sub>jc</sub>/N<sub>c</sub></span>.</li>
+          <li><b>Predict:</b> <span class="m">p(c | x) ∝ π<sub>c</sub> · Π (word factors)</span>, then divide by the sum.</li>
         </ol>
       </div>
       <div class="tablewrap">
         <table class="table">
           <thead><tr><th>10 messages</th><th>π̂</th><th>ez</th><th>noob</th><th>gg</th><th>wp</th></tr></thead>
           <tbody>
-            <tr><td>toxic, N_T = 4</td><td>0.4</td><td>3/4</td><td>3/4</td><td>2/4</td><td class="z">0/4</td></tr>
-            <tr><td>friendly, N_F = 6</td><td>0.6</td><td>1/6</td><td class="z">0/6</td><td>5/6</td><td>5/6</td></tr>
+            <tr><td>toxic, N<sub>T</sub> = 4</td><td>0.4</td><td>3/4</td><td>3/4</td><td>2/4</td><td class="z">0/4</td></tr>
+            <tr><td>friendly, N<sub>F</sub> = 6</td><td>0.6</td><td>1/6</td><td class="z">0/6</td><td>5/6</td><td>5/6</td></tr>
           </tbody>
         </table>
       </div>
@@ -262,7 +262,7 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
   <section class="section" id="zero">
     <h2 class="h2s">The zero problem</h2>
     <div class="threecol">
-      <div class="pcard"><div class="ph" style="background:linear-gradient(150deg,#c6b39b,#8a6f55)">gg wp</div><span class="cap">100% friendly?</span><p>The toxic score contains θ_wp,T = 0/4 = 0, so it is exactly 0, however toxic the rest looks. One unseen word decides everything.</p></div>
+      <div class="pcard"><div class="ph" style="background:linear-gradient(150deg,#c6b39b,#8a6f55)">gg wp</div><span class="cap">100% friendly?</span><p>The toxic score contains θ<sub>wp,T</sub> = 0/4 = 0, so it is exactly 0, however toxic the rest looks. One unseen word decides everything.</p></div>
       <div class="pcard" style="transform:rotate(1.5deg)"><div class="ph" style="background:linear-gradient(150deg,#d9a59a,#b8423f)">noob wp</div><span class="cap">0 / 0</span><p>Toxic score 0 (because of wp), friendly score 0 (because of noob). The probabilities are 0/0: the classifier cannot answer at all.</p></div>
       <div class="pcard" style="transform:rotate(-1deg)"><div class="ph" style="background:linear-gradient(150deg,#b9c58f,#6f7f4c)">subject</div><span class="cap">the slides' example</span><p>The word “subject” is in every training email of both classes: θ̂ = 1. A new email without it gets 1 − 1 = 0 in both classes. “Crash and burn.”</p></div>
     </div>
@@ -284,8 +284,8 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
       </div>
       <div class="sheet stamp">
         <span class="h3">Dirichlet prior for class probabilities</span>
-        <p style="color:#4a3d36">Prior π ~ Dir(α₁, …, α_C). With class counts N_c the posterior is Dir(α_c + N_c), and the predictive class probability is:</p>
-        <div class="frm">(N_c + α_c) / (N + α₀), &nbsp; α₀ = Σα_c</div>
+        <p style="color:#4a3d36">Prior π ~ Dir(α₁, …, α<sub>C</sub>). With class counts N<sub>c</sub> the posterior is Dir(α<sub>c</sub> + N<sub>c</sub>), and the predictive class probability is:</p>
+        <div class="frm">(N<sub>c</sub> + α<sub>c</sub>) / (N + α₀), &nbsp; α₀ = Σα<sub>c</sub></div>
         <p class="note2">With two classes this is just a Beta again.</p>
       </div>
     </div>
@@ -298,28 +298,28 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
     <div class="twocol">
       <div class="prose">
         <p><b>Factored prior:</b> one Dirichlet for the class probabilities, and one independent Beta for every word and class:</p>
-        <div class="frm">p(θ) = Dir(π | α) · Π<sub>j</sub> Π<sub>c</sub> Beta(θ_jc | a, b)</div>
+        <div class="frm">p(θ) = Dir(π | α) · Π<sub>j</sub> Π<sub>c</sub> Beta(θ<sub>jc</sub> | a, b)</div>
         <p>Because each piece is conjugate, the posterior splits the same way, and each piece is “prior + counts”. To predict, plug in the <b>posterior means</b> instead of the MLEs (this is exactly the Bayesian posterior predictive):</p>
-        <div class="frm big">θ̄_jc = (N_jc + a)/(N_c + a + b), &nbsp; π̄_c = (N_c + α_c)/(N + α₀)</div>
-        <p>With a = b = 1 and α_c = 1 this is <b>add-one (Laplace) smoothing</b>: pretend you saw every word once present and once absent in every class.</p>
+        <div class="frm big">θ̄<sub>jc</sub> = (N<sub>jc</sub> + a)/(N<sub>c</sub> + a + b), &nbsp; π̄<sub>c</sub> = (N<sub>c</sub> + α<sub>c</sub>)/(N + α₀)</div>
+        <p>With a = b = 1 and α<sub>c</sub> = 1 this is <b>add-one (Laplace) smoothing</b>: pretend you saw every word once present and once absent in every class.</p>
       </div>
       <div class="derive">
-        <div class="drow"><span class="k">classes</span><span class="eq">π | D ~ Dir(N₁ + α₁, …, N_C + α_C)</span><span class="why">Dirichlet + class counts</span></div>
-        <div class="drow"><span class="k">each word</span><span class="eq">θ_jc | D ~ Beta(N_jc + a, N_c − N_jc + b)</span><span class="why">“present” counts go to a, “absent” to b</span></div>
-        <div class="drow"><span class="k">predict</span><span class="eq">p(c | x, D) ∝ π̄_c Π<sub>j</sub> θ̄_jc<sup>x_j</sup>(1 − θ̄_jc)<sup>1−x_j</sup></span><span class="why">same formula as part 1, smoothed numbers</span></div>
-        <div class="drow ans"><span class="k">add-one</span><span class="eq">θ̄_jc = (N_jc + 1)/(N_c + 2), &nbsp; π̄_c = (N_c + 1)/(N + C)</span><span class="why">a = b = 1, α = 1</span></div>
+        <div class="drow"><span class="k">classes</span><span class="eq">π | D ~ Dir(N₁ + α₁, …, N<sub>C</sub> + α<sub>C</sub>)</span><span class="why">Dirichlet + class counts</span></div>
+        <div class="drow"><span class="k">each word</span><span class="eq">θ<sub>jc</sub> | D ~ Beta(N<sub>jc</sub> + a, N<sub>c</sub> − N<sub>jc</sub> + b)</span><span class="why">“present” counts go to a, “absent” to b</span></div>
+        <div class="drow"><span class="k">predict</span><span class="eq">p(c | x, D) ∝ π̄<sub>c</sub> Π<sub>j</sub> θ̄<sub>jc</sub><sup>x<sub>j</sub></sup>(1 − θ̄<sub>jc</sub>)<sup>1−x<sub>j</sub></sup></span><span class="why">same formula as part 1, smoothed numbers</span></div>
+        <div class="drow ans"><span class="k">add-one</span><span class="eq">θ̄<sub>jc</sub> = (N<sub>jc</sub> + 1)/(N<sub>c</sub> + 2), &nbsp; π̄<sub>c</sub> = (N<sub>c</sub> + 1)/(N + C)</span><span class="why">a = b = 1, α = 1</span></div>
       </div>
     </div>
     <div class="tablewrap">
       <table class="table">
         <thead><tr><th>add-one estimates</th><th>π̄</th><th>ez</th><th>noob</th><th>gg</th><th>wp</th></tr></thead>
         <tbody>
-          <tr><td>toxic (N_T = 4)</td><td>5/12</td><td>4/6</td><td>4/6</td><td>3/6</td><td class="s">1/6 (was 0)</td></tr>
-          <tr><td>friendly (N_F = 6)</td><td>7/12</td><td>2/8</td><td class="s">1/8 (was 0)</td><td>6/8</td><td>6/8</td></tr>
+          <tr><td>toxic (N<sub>T</sub> = 4)</td><td>5/12</td><td>4/6</td><td>4/6</td><td>3/6</td><td class="s">1/6 (was 0)</td></tr>
+          <tr><td>friendly (N<sub>F</sub> = 6)</td><td>7/12</td><td>2/8</td><td class="s">1/8 (was 0)</td><td>6/8</td><td>6/8</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="remember"><b>remember it:</b> Bayesian NBC = Beta prior on every θ_jc, Dirichlet on π; predict with (N_jc + a)/(N_c + a + b). No more zeros.</p>
+    <p class="remember"><b>remember it:</b> Bayesian NBC = Beta prior on every θ<sub>jc</sub>, Dirichlet on π; predict with (N<sub>jc</sub> + a)/(N<sub>c</sub> + a + b). No more zeros.</p>
   </section>
 
   <!-- LAB -->
@@ -351,10 +351,10 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
     <div class="twocol">
       <div class="sheet">
         <span class="h3">2025 final, task 5 (Dota numbers)</span>
-        <p style="color:#4a3d36">Games (W/L) with x₁ = first blood, x₂ = won mid: (L,1,1), (L,0,0), (W,1,1), (W,1,0), (L,0,1), (L,1,0), (W,1,1). With the MLE, x = (0, 1) gave “loss with probability 1” because θ̂_FB,W = 3/3 = 1.</p>
+        <p style="color:#4a3d36">Games (W/L) with x₁ = first blood, x₂ = won mid: (L,1,1), (L,0,0), (W,1,1), (W,1,0), (L,0,1), (L,1,0), (W,1,1). With the MLE, x = (0, 1) gave “loss with probability 1” because θ̂<sub>FB,W</sub> = 3/3 = 1.</p>
         <div class="derive">
-          <div class="drow"><span class="k">add-one</span><span class="eq">θ̄<sub>FB,W</sub> = 4/5, θ̄<sub>mid,W</sub> = 3/5; θ̄<sub>FB,L</sub> = θ̄<sub>mid,L</sub> = 3/6</span><span class="why">(count + 1)/(N_c + 2)</span></div>
-          <div class="drow"><span class="k">priors</span><span class="eq">π̄_W = 4/9, π̄_L = 5/9</span><span class="why">(N_c + 1)/(7 + 2)</span></div>
+          <div class="drow"><span class="k">add-one</span><span class="eq">θ̄<sub>FB,W</sub> = 4/5, θ̄<sub>mid,W</sub> = 3/5; θ̄<sub>FB,L</sub> = θ̄<sub>mid,L</sub> = 3/6</span><span class="why">(count + 1)/(N<sub>c</sub> + 2)</span></div>
+          <div class="drow"><span class="k">priors</span><span class="eq">π̄<sub>W</sub> = 4/9, π̄<sub>L</sub> = 5/9</span><span class="why">(N<sub>c</sub> + 1)/(7 + 2)</span></div>
           <div class="drow"><span class="k">scores</span><span class="eq">W: 4/9 · 1/5 · 3/5 ≈ 0.053; L: 5/9 · 1/2 · 1/2 ≈ 0.139</span><span class="why"></span></div>
           <div class="drow ans"><span class="k">answer</span><span class="eq">p(W | x) ≈ 0.28</span><span class="why">a sensible probability instead of 0</span></div>
         </div>
@@ -377,11 +377,11 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
     <div class="twocol">
       <div class="prose">
         <p><b>The question:</b> which words actually help to tell toxic from friendly? Too many features make the NBC slow and let it overfit, so we want to keep only the useful ones (<b>feature selection</b>).</p>
-        <p><b>The tool:</b> the mutual information between a feature X_j and the class Y measures how much knowing X_j tells you about Y:</p>
-        <div class="frm big">I(X_j, Y) = Σ<sub>x</sub> Σ<sub>y</sub> p(x, y) log [ p(x, y) / (p(x) p(y)) ]</div>
-        <p>If X_j and Y are independent, p(x, y) = p(x)p(y), every log is log 1 = 0, and I = 0: the word tells you nothing. The more the joint differs from the product, the bigger I. In fact I(X, Y) is the KL divergence between p(x, y) and p(x)p(y), so it is always ≥ 0.</p>
-        <p>For a binary word, using the NBC's own numbers (θ_j = Σ_c π_c θ_jc is how often the word appears overall):</p>
-        <div class="frm">I_j = Σ<sub>c</sub> π_c [ θ_jc log(θ_jc/θ_j) + (1 − θ_jc) log((1 − θ_jc)/(1 − θ_j)) ]</div>
+        <p><b>The tool:</b> the mutual information between a feature X<sub>j</sub> and the class Y measures how much knowing X<sub>j</sub> tells you about Y:</p>
+        <div class="frm big">I(X<sub>j</sub>, Y) = Σ<sub>x</sub> Σ<sub>y</sub> p(x, y) log [ p(x, y) / (p(x) p(y)) ]</div>
+        <p>If X<sub>j</sub> and Y are independent, p(x, y) = p(x)p(y), every log is log 1 = 0, and I = 0: the word tells you nothing. The more the joint differs from the product, the bigger I. In fact I(X, Y) is the KL divergence between p(x, y) and p(x)p(y), so it is always ≥ 0.</p>
+        <p>For a binary word, using the NBC's own numbers (θ<sub>j</sub> = Σ<sub>c</sub> π<sub>c</sub> θ<sub>jc</sub> is how often the word appears overall):</p>
+        <div class="frm">I<sub>j</sub> = Σ<sub>c</sub> π<sub>c</sub> [ θ<sub>jc</sub> log(θ<sub>jc</sub>/θ<sub>j</sub>) + (1 − θ<sub>jc</sub>) log((1 − θ<sub>jc</sub>)/(1 − θ<sub>j</sub>)) ]</div>
       </div>
       <div class="sheet">
         <span class="h3">Our four words (MLE numbers, 0 · log 0 = 0)</span>
@@ -394,10 +394,10 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
         <p class="note2">“gg” appears in both classes (θ = 0.5 vs 0.83), so it barely separates them. “wp” never appears in toxic chat: very informative. With add-one numbers the order stays the same (0.177, 0.163, 0.088, 0.033). The slides show the same effect: “subject” is in every email (useless), while “windows” has the highest MI, 0.215.</p>
         <span class="h3">Step by step for “gg”</span>
         <div class="derive">
-          <div class="drow"><span class="k">overall</span><span class="eq">θ_gg = 0.4·0.5 + 0.6·(5/6) = 0.7</span><span class="why">mix of the two classes</span></div>
+          <div class="drow"><span class="k">overall</span><span class="eq">θ<sub>gg</sub> = 0.4·0.5 + 0.6·(5/6) = 0.7</span><span class="why">mix of the two classes</span></div>
           <div class="drow"><span class="k">toxic</span><span class="eq">0.4[0.5 log(0.5/0.7) + 0.5 log(0.5/0.3)] ≈ 0.035</span><span class="why">present and absent parts</span></div>
           <div class="drow"><span class="k">friendly</span><span class="eq">0.6[(5/6) log((5/6)/0.7) + (1/6) log((1/6)/0.3)] ≈ 0.028</span><span class="why"></span></div>
-          <div class="drow ans"><span class="k">sum</span><span class="eq">I_gg ≈ 0.063</span><span class="why">natural log</span></div>
+          <div class="drow ans"><span class="k">sum</span><span class="eq">I<sub>gg</sub> ≈ 0.063</span><span class="why">natural log</span></div>
         </div>
       </div>
     </div>
@@ -408,7 +408,7 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
   <section class="section" id="irrelevant">
     <h2 class="h2t">Irrelevant words &amp; <span style="color:var(--muted)">naive vs full model</span></h2>
     <div class="threecol">
-      <div class="sheet"><span class="h3">When does a word not matter? (Week 6, Q2)</span><p style="color:#4a3d36">A word changes the posterior odds only through θ_1w/θ_2w (present) and (1 − θ_1w)/(1 − θ_2w) (absent). If <b>θ_1w = θ_2w</b>, both ratios are 1 and log 1 = 0: the word has no effect.</p></div>
+      <div class="sheet"><span class="h3">When does a word not matter? (Week 6, Q2)</span><p style="color:#4a3d36">A word changes the posterior odds only through θ<sub>1w</sub>/θ<sub>2w</sub> (present) and (1 − θ<sub>1w</sub>)/(1 − θ<sub>2w</sub>) (absent). If <b>θ<sub>1w</sub> = θ<sub>2w</sub></b>, both ratios are 1 and log 1 = 0: the word has no effect.</p></div>
       <div class="sheet"><span class="h3">A smoothing side effect</span><p style="color:#4a3d36">Say “gl” is in every message of both classes, 4 toxic and 6 friendly. Add-one gives 5/6 ≈ 0.83 for toxic but 7/8 = 0.875 for friendly. The useless word now nudges towards the bigger class. Fixes: drop such words (stop words, MI filter), share one estimate across classes, or use a regularised discriminative model.</p></div>
       <div class="sheet"><span class="h3">Naive vs full model (Week 6, Q1)</span><p style="color:#4a3d36">A full model of p(x | c) needs C(2<sup>D</sup> − 1) numbers; naive Bayes needs C·D. With <b>little data</b> NBC usually wins: more bias, much less variance, fewer zero counts. With <b>lots of data</b> the full model can win if the words really are dependent.</p></div>
     </div>
@@ -420,17 +420,25 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
     <div class="twocol">
       <div class="sheet">
         <span class="h3">Task 4: estimated probabilities with zeros</span>
-        <p style="color:#4a3d36">MLE table (pass/fail, 3 features): θ_hw,pass = 1/2, θ_att,pass = 1/2, θ_q,pass = 0; θ_hw,fail = 0, θ_att,fail = 1/2, θ_q,fail = 0; π̂_pass = 3/5, π̂_fail = 2/5. <b>(a)</b> Classify (1, 1, 0). <b>(b)</b> Explain the importance of priors for small data sets and give the conjugate priors on θ and π.</p>
+        <p style="color:#4a3d36">A naive Bayes classifier was fitted with MLE. The estimated probabilities are:</p>
+        <div class="tablewrap"><table class="table" style="min-width:0">
+          <thead><tr><th>class</th><th>homework</th><th>attendance</th><th>questions</th><th>class prior π̂</th></tr></thead>
+          <tbody>
+            <tr><td>pass</td><td>θ = 1/2</td><td>θ = 1/2</td><td class="z">θ = 0</td><td>3/5</td></tr>
+            <tr><td>fail</td><td class="z">θ = 0</td><td>θ = 1/2</td><td class="z">θ = 0</td><td>2/5</td></tr>
+          </tbody>
+        </table></div>
+        <p style="color:#4a3d36"><b>(a)</b> Classify x = (1, 1, 0): yes homework, yes attendance, no questions.<br><b>(b)</b> Explain why priors matter for small data sets, and give the conjugate priors on θ and π.</p>
         <div class="derive">
           <div class="drow"><span class="k">pass</span><span class="eq">3/5 · 1/2 · 1/2 · (1 − 0) = 0.15</span><span class="why">hw yes, att yes, q no</span></div>
-          <div class="drow"><span class="k">fail</span><span class="eq">2/5 · 0 · … = 0</span><span class="why">θ_hw,fail = 0 kills it</span></div>
+          <div class="drow"><span class="k">fail</span><span class="eq">2/5 · 0 · … = 0</span><span class="why">θ<sub>hw,fail</sub> = 0 kills it</span></div>
           <div class="drow ans"><span class="k">(a)</span><span class="eq">pass, with probability 1</span><span class="why">decided by one zero</span></div>
-          <div class="drow ans"><span class="k">(b)</span><span class="eq">θ_jc ~ Beta(a, b), &nbsp; π ~ Dir(α)</span><span class="why">priors remove zero counts and the black swan problem</span></div>
+          <div class="drow ans"><span class="k">(b)</span><span class="eq">θ<sub>jc</sub> ~ Beta(a, b), &nbsp; π ~ Dir(α)</span><span class="why">priors remove zero counts and the black swan problem</span></div>
         </div>
       </div>
       <div class="sheet stamp">
         <span class="h3">Task 1(h): explain mutual information</span>
-        <p style="color:#4a3d36">“I(X, Y) measures how far the joint distribution p(x, y) is from the product p(x)p(y), formally the KL divergence between them. It is zero if and only if X and Y are independent. In naive Bayes we compute I(X_j, Y) for every feature and the class; features with small I carry little information about the class and can be removed (feature selection).”</p>
+        <p style="color:#4a3d36">“I(X, Y) measures how far the joint distribution p(x, y) is from the product p(x)p(y), formally the KL divergence between them. It is zero if and only if X and Y are independent. In naive Bayes we compute I(X<sub>j</sub>, Y) for every feature and the class; features with small I carry little information about the class and can be removed (feature selection).”</p>
       </div>
     </div>
   </section>
@@ -439,17 +447,17 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
   <section class="section">
     <h2 class="h2s">Learn it by heart</h2>
     <div class="traps">
-      <div class="trap" style="--r:-1deg"><b>Prior on the wrong side</b><span>Add a to the “present” count and b to the “absent” count: (N_jc + a)/(N_c + a + b).</span></div>
-      <div class="trap" style="--r:1deg"><b>Forgetting π</b><span>Smooth the class prior too: (N_c + α_c)/(N + α₀).</span></div>
+      <div class="trap" style="--r:-1deg"><b>Prior on the wrong side</b><span>Add a to the “present” count and b to the “absent” count: (N<sub>jc</sub> + a)/(N<sub>c</sub> + a + b).</span></div>
+      <div class="trap" style="--r:1deg"><b>Forgetting π</b><span>Smooth the class prior too: (N<sub>c</sub> + α<sub>c</sub>)/(N + α₀).</span></div>
       <div class="trap" style="--r:-.5deg"><b>MAP is not smoothing</b><span>With a = b = 1 the MAP equals the MLE (zeros stay). Use the posterior mean.</span></div>
       <div class="trap" style="--r:.6deg"><b>MI sign</b><span>Mutual information is never negative. 0 means independent.</span></div>
       <div class="trap" style="--r:-1.2deg"><b>Frequent ≠ useful</b><span>A word in every message (“subject”, “gg”) has high θ but low MI.</span></div>
       <div class="trap" style="--r:.8deg"><b>0 · log 0</b><span>In MI sums, terms with probability 0 count as 0.</span></div>
     </div>
     <div class="faq">
-      <details><summary>Why does the MLE naive Bayes break on unseen words?</summary><div class="a"><p>θ̂_jc = 0 (or 1) makes one factor 0, so the whole class score is 0; if this happens in every class we get 0/0.</p></div></details>
-      <details><summary>What priors does Bayesian naive Bayes use, and why those?</summary><div class="a"><p>Beta(a, b) on each θ_jc and Dir(α) on π. They are conjugate to the Bernoulli and Categorical likelihoods, so the posterior is prior + counts.</p></div></details>
-      <details><summary>What is add-one smoothing?</summary><div class="a"><p>Predicting with posterior means under Beta(1, 1) and Dir(1, …, 1): θ̄ = (N_jc + 1)/(N_c + 2), π̄ = (N_c + 1)/(N + C).</p></div></details>
+      <details><summary>Why does the MLE naive Bayes break on unseen words?</summary><div class="a"><p>θ̂<sub>jc</sub> = 0 (or 1) makes one factor 0, so the whole class score is 0; if this happens in every class we get 0/0.</p></div></details>
+      <details><summary>What priors does Bayesian naive Bayes use, and why those?</summary><div class="a"><p>Beta(a, b) on each θ<sub>jc</sub> and Dir(α) on π. They are conjugate to the Bernoulli and Categorical likelihoods, so the posterior is prior + counts.</p></div></details>
+      <details><summary>What is add-one smoothing?</summary><div class="a"><p>Predicting with posterior means under Beta(1, 1) and Dir(1, …, 1): θ̄ = (N<sub>jc</sub> + 1)/(N<sub>c</sub> + 2), π̄ = (N<sub>c</sub> + 1)/(N + C).</p></div></details>
       <details><summary>What does mutual information measure, and how is it used?</summary><div class="a"><p>How much a feature tells about the class: KL(p(x, y) ‖ p(x)p(y)). Rank features by it and keep the most informative ones.</p></div></details>
       <details><summary>When is the naive model better than the full model?</summary><div class="a"><p>With little data: far fewer parameters (C·D instead of C(2<sup>D</sup> − 1)), so lower variance, even though the independence assumption adds bias.</p></div></details>
     </div>
@@ -459,26 +467,26 @@ footer{text-align:center;color:var(--muted);font:300 13px var(--thin);text-trans
   <section class="section" id="practice">
     <h2 class="h2s">Practice problems</h2>
     <div class="probs">
-      <article class="prob"><div class="ptop"><span class="pn">1</span><span class="lvl l1">easy</span></div><h3 class="h3">Add-one with 3 messages</h3><p>A class has N_c = 3 messages. Words appear 0, 1 and 3 times. Give the MLE and the add-one estimates. (Week 5, Q1)</p>
-        <details><summary>hint</summary><div class="a"><p>(N_jc + 1)/(3 + 2).</p></div></details>
+      <article class="prob"><div class="ptop"><span class="pn">1</span><span class="lvl l1">easy</span></div><h3 class="h3">Add-one with 3 messages</h3><p>A class has N<sub>c</sub> = 3 messages. Words appear 0, 1 and 3 times. Give the MLE and the add-one estimates. (Week 5, Q1)</p>
+        <details><summary>hint</summary><div class="a"><p>(N<sub>jc</sub> + 1)/(3 + 2).</p></div></details>
         <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>MLE: 0, 1/3, 1</li><li>Add-one: 1/5, 2/5, 4/5: no 0 and no 1 any more</li></ul></div></details></article>
       <article class="prob"><div class="ptop"><span class="pn">2</span><span class="lvl l1">easy</span></div><h3 class="h3">Smoothed class prior</h3><p>4 toxic and 6 friendly messages, prior Dir(1, 1). Compute π̄. What happens with Dir(10, 10)?</p>
-        <details><summary>hint</summary><div class="a"><p>(N_c + α_c)/(N + α₀).</p></div></details>
+        <details><summary>hint</summary><div class="a"><p>(N<sub>c</sub> + α<sub>c</sub>)/(N + α₀).</p></div></details>
         <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>Dir(1, 1): 5/12 ≈ 0.42 and 7/12 ≈ 0.58</li><li>Dir(10, 10): 14/30 ≈ 0.47 and 16/30 ≈ 0.53, pulled towards 1/2</li></ul></div></details></article>
       <article class="prob"><div class="ptop"><span class="pn">3</span><span class="lvl l2">medium</span></div><h3 class="h3">Classify “ez wp” with smoothing</h3><p>Use the add-one table of this lecture to compute p(toxic | x) for x = (1, 0, 0, 1). What does the MLE say?</p>
         <details><summary>hint</summary><div class="a"><p>Present: ez, wp. Absent: noob, gg.</p></div></details>
         <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>T: 5/12 · 4/6 · (1 − 4/6) · (1 − 3/6) · 1/6 ≈ 0.0077</li><li>F: 7/12 · 2/8 · (1 − 1/8) · (1 − 6/8) · 6/8 ≈ 0.0239</li><li>p(T | x) ≈ 0.24 → friendly. MLE: toxic score 0 (wp), so 100% friendly.</li></ul></div></details></article>
-      <article class="prob"><div class="ptop"><span class="pn">4</span><span class="lvl l2">medium</span></div><h3 class="h3">When is MI zero?</h3><p>Show with the binary MI formula that a word with θ_jT = θ_jF has I_j = 0.</p>
-        <details><summary>hint</summary><div class="a"><p>Then θ_j = Σ π_c θ_jc equals that same value.</p></div></details>
-        <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>θ_jT = θ_jF = t ⇒ θ_j = π_T t + π_F t = t</li><li>Every log becomes log(t/t) = log((1 − t)/(1 − t)) = 0, so I_j = 0: the word is independent of the class</li></ul></div></details></article>
-      <article class="prob"><div class="ptop"><span class="pn">5</span><span class="lvl l2">medium</span></div><h3 class="h3">Compute an MI</h3><p>π = (0.5, 0.5), θ_T = 0.8, θ_F = 0.2. Compute I_j (natural log).</p>
-        <details><summary>hint</summary><div class="a"><p>θ_j = 0.5. The two classes give the same contribution by symmetry.</p></div></details>
-        <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>Toxic part: 0.5[0.8 log(0.8/0.5) + 0.2 log(0.2/0.5)] = 0.5[0.376 − 0.183] ≈ 0.096</li><li>Friendly part: the same, ≈ 0.096</li><li>I_j ≈ 0.193</li></ul></div></details></article>
-      <article class="prob"><div class="ptop"><span class="pn">6</span><span class="lvl l3">exam-style · 2026 task 4</span></div><h3 class="h3">Smooth a zero</h3><p>5 students in total, 3 pass and 2 fail. In the fail class, homework was done by 0, attendance by 1 and questions by 0 students. (a) Give the add-one θ̄ for the fail class. (b) Compute the fail score for x = (1, 1, 0) with π̄_fail = (2 + 1)/(5 + 2).</p>
+      <article class="prob"><div class="ptop"><span class="pn">4</span><span class="lvl l2">medium</span></div><h3 class="h3">When is MI zero?</h3><p>Show with the binary MI formula that a word with θ<sub>jT</sub> = θ<sub>jF</sub> has I<sub>j</sub> = 0.</p>
+        <details><summary>hint</summary><div class="a"><p>Then θ<sub>j</sub> = Σ π<sub>c</sub> θ<sub>jc</sub> equals that same value.</p></div></details>
+        <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>θ<sub>jT</sub> = θ<sub>jF</sub> = t ⇒ θ<sub>j</sub> = π<sub>T</sub> t + π<sub>F</sub> t = t</li><li>Every log becomes log(t/t) = log((1 − t)/(1 − t)) = 0, so I<sub>j</sub> = 0: the word is independent of the class</li></ul></div></details></article>
+      <article class="prob"><div class="ptop"><span class="pn">5</span><span class="lvl l2">medium</span></div><h3 class="h3">Compute an MI</h3><p>π = (0.5, 0.5), θ<sub>T</sub> = 0.8, θ<sub>F</sub> = 0.2. Compute I<sub>j</sub> (natural log).</p>
+        <details><summary>hint</summary><div class="a"><p>θ<sub>j</sub> = 0.5. The two classes give the same contribution by symmetry.</p></div></details>
+        <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>Toxic part: 0.5[0.8 log(0.8/0.5) + 0.2 log(0.2/0.5)] = 0.5[0.376 − 0.183] ≈ 0.096</li><li>Friendly part: the same, ≈ 0.096</li><li>I<sub>j</sub> ≈ 0.193</li></ul></div></details></article>
+      <article class="prob"><div class="ptop"><span class="pn">6</span><span class="lvl l3">exam-style · 2026 task 4</span></div><h3 class="h3">Smooth a zero</h3><p>5 students in total, 3 pass and 2 fail. In the fail class, homework was done by 0, attendance by 1 and questions by 0 students. (a) Give the add-one θ̄ for the fail class. (b) Compute the fail score for x = (1, 1, 0) with π̄<sub>fail</sub> = (2 + 1)/(5 + 2).</p>
         <details><summary>hint</summary><div class="a"><p>(count + 1)/(2 + 2).</p></div></details>
-        <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>θ̄_hw = 1/4, θ̄_att = 2/4, θ̄_q = 1/4</li><li>fail score = 3/7 · 1/4 · 1/2 · (1 − 1/4) ≈ 0.040: no longer 0</li></ul></div></details></article>
+        <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>θ̄<sub>hw</sub> = 1/4, θ̄<sub>att</sub> = 2/4, θ̄<sub>q</sub> = 1/4</li><li>fail score = 3/7 · 1/4 · 1/2 · (1 − 1/4) ≈ 0.040: no longer 0</li></ul></div></details></article>
       <article class="prob"><div class="ptop"><span class="pn">7</span><span class="lvl l4">challenge · week 6 q2</span></div><h3 class="h3">A useless word that isn't</h3><p>Class sizes 2 and 8; a word appears in every document of both classes. Compute the add-one θ̄ for each class and the word's contribution to the log odds log p(1 | x)/p(2 | x) when it is present.</p>
-        <details><summary>hint</summary><div class="a"><p>(n_c + 1)/(n_c + 2).</p></div></details>
+        <details><summary>hint</summary><div class="a"><p>(n<sub>c</sub> + 1)/(n<sub>c</sub> + 2).</p></div></details>
         <details><summary>solution</summary><div class="a"><ul class="steps-l"><li>θ̄₁ = 3/4 = 0.75, θ̄₂ = 9/10 = 0.9</li><li>Contribution log(0.75/0.9) ≈ −0.18: a push towards the bigger class 2, caused only by smoothing</li></ul></div></details></article>
     </div>
   </section>
